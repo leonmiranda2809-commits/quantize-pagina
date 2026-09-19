@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUANTIZE | Gorras y Accesorios</title>
+    <!-- Tailwind CSS CDN Seguro -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/space-grotesk@5.0.17/index.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.16/index.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ffffff;
+            --bg-dark: #0a0a0a;
+            --accent: #ef4444;
+            --surface: #171717;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--primary);
+            overflow-x: hidden;
+            padding-bottom: 70px; /* Espacio para el banner fijo de WhatsApp */
+        }
+
+        h1, h2, h3, .brand-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(23, 23, 23, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .glass-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(239, 68, 68, 0.2);
+        }
+
+        .product-img-container {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1/1;
+            background: #fff;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 5px;
+            transition: transform 0.5s ease;
+        }
+
+        .glass-card:hover .product-img {
+            transform: scale(1.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* --- ANIMACIONES Y ESTADOS ACTIVOS --- */
+        @keyframes rainbowBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .filter-btn[data-cat="all"].active,
+        .filter-btn[data-cat="all"]:hover {
+            background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+            background-size: 400% 400%;
+            animation: rainbowBorder 3s ease infinite;
+            color: white !important;
+            border-color: #ffffff !important;
+            border-width: 2px !important;
+            text-shadow: 0 0 10px rgba(0,0,0,0.8);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+        }
+
+        .filter-btn[data-cat="gorra"].active,
+        .filter-btn[data-cat="gorra"]:hover {
+            background-color: rgba(239, 68, 68, 0.15);
+            border-color: #ef4444 !important;
+            color: #ef4444 !important;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+            text-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+        }
+
+        .filter-btn[data-cat="bandolera"].active,
+        .filter-btn[data-cat="bandolera"]:hover {
+            background-color: rgba(34, 197, 94, 0.15);
+            border-color: #22c55e !important;
+            color: #22c55e !important;
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+            text-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+        }
+
+        .filter-btn[data-cat="cadena"].active,
+        .filter-btn[data-cat="cadena"]:hover {
+            background-color: rgba(59, 130, 246, 0.15);
+            border-color: #3b82f6 !important;
+            color: #3b82f6 !important;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+            text-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+        }
+
+        .filter-btn[data-cat="gafas"].active,
+        .filter-btn[data-cat="gafas"]:hover {
+            background-color: rgba(168, 85, 247, 0.15);
+            border-color: #a855f7 !important;
+            color: #a855f7 !important;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+            text-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
+        }
+
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+
+        .tag-pill {
+            transition: all 0.2s ease;
+        }
+        .tag-pill:hover {
+            background-color: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#ef4444] selection:text-white">
+
+    <!-- Navbar con Buscador y Botón de Carrito -->
+    <nav class="fixed top-0 w-full z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 gap-3">
+                <a href="https://instagram.com/Quantize.ok" target="_blank" class="text-xl font-bold brand-font tracking-tighter text-white hover:opacity-80 transition-opacity shrink-0">QUAN<span class="text-[#ef4444]">TIZE</span></a>
+                
+                <div class="hidden md:flex space-x-6 text-sm font-medium">
+                    <a href="#shop" onclick="filterProducts('gorra')" class="hover:text-[#ef4444] transition-colors">GORRAS</a>
+                    <a href="#shop" onclick="filterProducts('bandolera')" class="hover:text-[#22c55e] transition-colors">BANDOLERAS</a>
+                    <a href="#shop" onclick="filterProducts('cadena')" class="hover:text-[#3b82f6] transition-colors">CADENAS</a>
+                    <a href="#shop" onclick="filterProducts('gafas')" class="hover:text-[#a855f7] transition-colors">GAFAS</a>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <!-- Buscador con lupa y texto ¿Qué estás buscando? -->
+                    <div class="relative hidden sm:flex items-center bg-white/5 border border-white/10 rounded-full px-3 py-1.5 w-44 md:w-56 focus-within:border-[#ef4444] transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" id="search-input" oninput="handleSearch()" placeholder="¿Qué estás buscando?" class="bg-transparent text-xs text-white placeholder-gray-400 focus:outline-none w-full">
+                    </div>
+
+                    <!-- Botón Carrito de Compras -->
+                    <button onclick="toggleCartModal()" class="relative bg-white/10 hover:bg-[#ef4444] border border-white/20 text-white p-2.5 rounded-full transition-all flex items-center justify-center" title="Ver Carrito">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span id="cart-badge" class="absolute -top-1 -right-1 bg-[#ef4444] text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border border-black hidden">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section con Logo Enlazado a Instagram -->
+    <header class="relative pt-32 pb-12 lg:pt-44 lg:pb-16 overflow-hidden text-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+            <!-- Logo Súper Grande con Enlace a Instagram -->
+            <a href="https://instagram.com/Quantize.ok" target="_blank" class="mb-6 relative group cursor-pointer inline-block" title="Visitar Instagram de Quantize">
+                <div class="absolute -inset-2 bg-gradient-to-r from-red-600 via-purple-600 to-blue-600 rounded-full blur-md opacity-60 group-hover:opacity-100 transition duration-500"></div>
+                <img src="1788883435887.png" alt="QUANTIZE Logo" class="relative h-44 w-44 md:h-56 md:w-56 rounded-full object-cover border-4 border-white/20 shadow-2xl group-hover:scale-105 transition-transform duration-300">
+            </a>
+            
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-3 uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-[#ef4444]">
+                Gorras y Accesorios
+            </h1>
+            <p class="text-base md:text-xl font-medium tracking-wide text-gray-400 brand-font uppercase mb-3">
+                DEFINÍ TU <span class="text-[#ef4444]">ESTILO URBANO</span>
+            </p>
+            <p class="text-sm md:text-base text-green-400 font-medium max-w-xl mx-auto px-4 bg-white/5 py-2 px-4 rounded-full border border-green-500/30">
+                Seleccioná tus productos, añadilos al carrito o consultá al 1160565501
+            </p>
+        </div>
+    </header>
+
+    <!-- Shop Section -->
+    <main id="shop" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+            <button onclick="filterProducts('all')" data-cat="all" class="filter-btn active px-6 py-2 rounded-full border border-white/20 text-sm uppercase tracking-wider bg-white/5">Todo</button>
+            <button onclick="filterProducts('gorra')" data-cat="gorra" class="filter-btn px-6 py-2 rounded-full border border-white/20 text-sm uppercase tracking-wider bg-white/5">Gorras</button>
+            <button onclick="filterProducts('bandolera')" data-cat="bandolera" class="filter-btn px-6 py-2 rounded-full border border-white/20 text-sm uppercase tracking-wider bg-white/5">Bandoleras</button>
+            <button onclick="filterProducts('cadena')" data-cat="cadena" class="filter-btn px-6 py-2 rounded-full border border-white/20 text-sm uppercase tracking-wider bg-white/5">Cadenas</button>
+            <button onclick="filterProducts('gafas')" data-cat="gafas" class="filter-btn px-6 py-2 rounded-full border border-white/20 text-sm uppercase tracking-wider bg-white/5">Gafas</button>
+        </div>
+
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Products injected via JS -->
+        </div>
+
+        <!-- Apartados / Botones abajo de todo -->
+        <section class="mt-20 pt-10 border-t border-white/10 text-center">
+            <h3 class="text-lg font-bold uppercase tracking-wider mb-6 text-gray-300 brand-font">Explorá por Categorías y Marcas</h3>
+            <div class="flex flex-wrap justify-center gap-3">
+                <button onclick="filterByTag('futbol')" class="tag-pill px-5 py-2.5 rounded-full border border-white/20 bg-white/5 text-sm uppercase font-semibold">Fútbol</button>
+                <button onclick="filterByTag('nike')" class="tag-pill px-5 py-2.5 rounded-full border border-white/20 bg-white/5 text-sm uppercase font-semibold">Nike</button>
+                <button onclick="filterByTag('jordan')" class="tag-pill px-5 py-2.5 rounded-full border border-white/20 bg-white/5 text-sm uppercase font-semibold">Jordan</button>
+                <button onclick="filterByTag('chicago')" class="tag-pill px-5 py-2.5 rounded-full border border-white/20 bg-white/5 text-sm uppercase font-semibold">Chicago Bulls</button>
+                <button onclick="filterByTag('vans')" class="tag-pill px-5 py-2.5 rounded-full border border-white/20 bg-white/5 text-sm uppercase font-semibold">Vans Off The Wall</button>
+                <button onclick="filterByTag('argentina')" class="tag-pill px-5 py-2.5 rounded-full border border-white/20 bg-white/5 text-sm uppercase font-semibold">Argentina</button>
+                <button onclick="filterProducts('all')" class="tag-pill px-5 py-2.5 rounded-full border border-red-500/40 bg-red-500/10 text-sm uppercase font-semibold text-red-400">Ver Todo</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Horizontal de Detalle de Producto / Compra -->
+    <div id="product-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
+        <div class="glass-card max-w-2xl w-full rounded-2xl overflow-hidden border border-white/10 relative shadow-2xl animate-in fade-in zoom-in duration-200 flex flex-col md:flex-row">
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-10 bg-black/50 text-white hover:text-red-500 rounded-full p-2 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <!-- Imagen izquierda (horizontal) -->
+            <div class="md:w-1/2 product-img-container bg-white flex items-center justify-center">
+                <img id="modal-img" src="" alt="" class="product-img">
+            </div>
+
+            <!-- Contenido derecha -->
+            <div class="md:w-1/2 p-6 md:p-8 flex flex-col justify-between">
+                <div>
+                    <span id="modal-tag" class="inline-block bg-[#ef4444] text-white text-xs font-bold px-2.5 py-1 rounded mb-2"></span>
+                    <h3 id="modal-title" class="text-2xl font-bold brand-font mb-3"></h3>
+                    <div class="text-3xl font-black text-[#ef4444] mb-6" id="modal-price"></div>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <button onclick="addToCartFromModal()" class="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold py-3 px-6 rounded-xl transition-all uppercase tracking-wider text-center flex items-center justify-center gap-2">
+                        <span>🛒 Agregar al Carrito</span>
+                    </button>
+                    <button onclick="buyProductDirect()" class="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-600 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-green-600/30 uppercase tracking-wider text-center flex items-center justify-center gap-2">
+                        <span>Comprar Ahora</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal del Carrito de Compras -->
+    <div id="cart-modal" class="fixed inset-0 z-50 flex items-center justify-end bg-black/70 backdrop-blur-sm hidden">
+        <div class="bg-[#121212] w-full max-w-md h-full shadow-2xl border-l border-white/10 flex flex-col justify-between p-6 animate-in slide-in-from-right duration-300">
+            <div>
+                <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+                    <h3 class="text-xl font-bold brand-font flex items-center gap-2">
+                        <span>🛒 Tu Carrito</span>
+                    </h3>
+                    <button onclick="toggleCartModal()" class="text-gray-400 hover:text-white p-2 rounded-full hover:bg-white/5 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div id="cart-items-container" class="space-y-4 max-h-[50vh] overflow-y-auto pr-1">
+                    <!-- Items del carrito se cargan aquí -->
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-white/10 mt-4 flex flex-col gap-3">
+                <div class="flex justify-between items-center mb-1 text-lg">
+                    <span class="font-medium text-gray-400">Total a pagar:</span>
+                    <span id="cart-total-price" class="text-2xl font-black text-[#ef4444]">$0</span>
+                </div>
+                
+                <button onclick="checkoutWhatsApp()" class="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-600 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-green-600/30 uppercase tracking-wider text-center flex items-center justify-center gap-2">
+                    <span>💬 Enviar Pedido por WhatsApp</span>
+                </button>
+
+                <!-- Botón Seguir Comprando -->
+                <button onclick="toggleCartModal()" class="w-full bg-white/5 hover:bg-white/10 border border-white/15 text-white font-semibold py-3 px-6 rounded-xl transition-all uppercase text-xs tracking-wider text-center flex items-center justify-center gap-2">
+                    <span>← Seguir comprando</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cartel Verde Fijo Abajo de Todo -->
+    <div class="fixed bottom-0 left-0 w-full z-40 bg-green-600 text-white text-center py-3 font-bold text-sm md:text-base shadow-lg border-t border-green-500 flex items-center justify-center gap-2 cursor-pointer" onclick="openDirectWhatsApp()">
+        <span>💬 Contactar por WhatsApp al 1160565501</span>
+    </div>
+
+    <script>
+        const products = [
+            // Nuevas gorras incorporadas recientemente
+            { id: 433, name: "Gorra Boca Juniors Azul y Oro Adidas Classics", category: "gorra", price: 15000, image: "348d22cf06b5e51d0be2e9a086786a18b23d56a59b7c29fe0f7a6ffe0f2019c977480.jpg", tag: "BOCA" },
+            { id: 434, name: "Gorra Nike Air Gris Perla con Etiqueta Just Do It", category: "gorra", price: 15000, image: "92f3c16773f02b9bb1be34f07f8541f568eeb39e4da3276d20b7a6ce2c7fac9c77480.jpg", tag: "NIKE" },
+            { id: 435, name: "Gorra Nike Air Negra Clásica Urbana", category: "gorra", price: 15000, image: "f13e81bbda05ba6682dc64ad5b8103ad11d7f7f378ae456ec860d726b9489b7c77480.jpg", tag: "NIKE" },
+
+            // Gorras anteriores agregadas recientemente
+            { id: 427, name: "Gorra Jordan Jumpman Verde Oliva", category: "gorra", price: 15000, image: "0a933fbfa6726f252f9a7c337fe3df9e0773b16e6ffaa65dcdd6906fedf3c79577480.jpg", tag: "JORDAN" },
+            { id: 428, name: "Gorra Sharecropper The Farm Rojo y Negro", category: "gorra", price: 15000, image: "2dedd9c8e121ca6712c1d14a1e06fb9771be75c605337c57e65d0d08fc6e021f77480.jpg", tag: "SHARECROPPER" },
+            { id: 429, name: "Gorra River Plate Monumental Edición Especial", category: "gorra", price: 15000, image: "a633e6f4fdab606f55693ac0a5638df6a6f87b698c5dba03c680963812ddf51877480.jpg", tag: "RIVER" },
+            { id: 430, name: "Gorra Boca Juniors Azul y Oro Trucker", category: "gorra", price: 15000, image: "823d033bc692ed95d90ad6fb6912b15eebc773679ca35045d0571b560677192a77480.jpg", tag: "BOCA" },
+            { id: 431, name: "Gorra River Plate Escudo Clásico Rojinegro", category: "gorra", price: 15000, image: "9d410dcc7ea498bf3a9833334d3728aac99197598147db9268baef86f5d4b09977480.jpg", tag: "RIVER" },
+            { id: 432, name: "Gorra River Plate Estilo Tiburón Blanco/Negro", category: "gorra", price: 15000, image: "ac00e36c518b070e1804bb2e19a015d7b8042571a5481109b136996274809e3e77480.jpg", tag: "RIVER" },
+
+            // Otras gorras incorporadas previamente
+            { id: 417, name: "Gorra Chicago Bulls Mitchell & Ness Edición Especial", category: "gorra", price: 15000, image: "94091ca55a9bff1f96d6a9593251d35c83a5831308e96653ab8bd9369310200f77480.jpg", tag: "CHICAGO" },
+            { id: 418, name: "Gorra Perforada Urbana Verde Oliva", category: "gorra", price: 15000, image: "f3000b92204a0ed2471c97346d502101412d47fb490781a3d36b7a717506b84677480.jpg", tag: "PERFORADA" },
+            { id: 419, name: "Gorra Black Brasil Roja Premium", category: "gorra", price: 15000, image: "87fc3d454861a38df85eefb98c5a1b86452c584d5e3d5cc798e85ac6d79687a877480.jpg", tag: "BRASIL" },
+            { id: 420, name: "Gorra Vans Off The Wall Verde Claro", category: "gorra", price: 15000, image: "311ec98b716cd51bd26076b203a97a14a7e931fc3dc44dc92124aefff98731e277480 (1).jpg", tag: "VANS" },
+            { id: 421, name: "Gorra Vans Off The Wall Beige Clásica", category: "gorra", price: 15000, image: "0490b67b08e54e9e976079d8609370bcfb9e84f3f52984e987290213304bffb877480.jpg", tag: "VANS" },
+            { id: 422, name: "Gorra Vans Off The Wall Gris Urbana", category: "gorra", price: 15000, image: "49010dc44cf051fddbbac326e3214d139991e3cb45ed0497d83a3e583b1977e777480.jpg", tag: "VANS" },
+            { id: 423, name: "Gorra Vans Off The Wall Marrón Camel", category: "gorra", price: 15000, image: "753fe49def53585ce68d72a2de7bb64bc8091529775a8b4591990176ea05e12d77480.jpg", tag: "VANS" },
+            { id: 424, name: "Gorra Jordan Jumpman Blanco Clásico", category: "gorra", price: 15000, image: "5dd4c54c428772d5714e418b5a589d8d6264352d92dd1f47ac5cf195449827f177480.jpg", tag: "JORDAN" },
+            { id: 425, name: "Gorra Jordan Jumpman Arena / Beige", category: "gorra", price: 15000, image: "f92923309731bb84aab3b6b923387f20366b663bd0c47121a780870add1cd91a77480.jpg", tag: "JORDAN" },
+            { id: 426, name: "Gorra Jordan Jumpman Rosa Pastel", category: "gorra", price: 15000, image: "610a4acde005b377ccf34fb2e687234c9e6968806f3241a578c82e23c8f450ab77480.jpg", tag: "JORDAN" },
+
+            // Gorras anteriores agregadas previamente
+            { id: 410, name: "Gorra Made in Mato Special Edition", category: "gorra", price: 15000, image: "image_8d1e42.jpg", tag: "EXCLUSIVE" },
+            { id: 411, name: "Gorra LA Dodgers Marrón", category: "gorra", price: 15000, image: "22ea01ebc939e6a8596dcefce2ba6713994b3c24806760a615f3244444b3725f77480.jpg", tag: "DODGERS" },
+            { id: 412, name: "Gorra LA Dodgers Gris", category: "gorra", price: 15000, image: "a6827e6283342a9430532f93dde1b2660c569c8ff7ba2f708a3dc5835bd4821377480.jpg", tag: "DODGERS" },
+            { id: 413, name: "Gorra AFA Campeones Messi", category: "gorra", price: 15000, image: "72ecc5a613767bf3b0550ad17948bb5907db28e37ce079792b4c3ba41ad76b2277480.jpg", tag: "CAMPEONES" },
+            { id: 414, name: "Gorra AFA Urbano Azul", category: "gorra", price: 15000, image: "54773202e7a6455d25c65ad2f995fd4dd66dbedfc1a134abe7b9d8adc6915ab277480.jpg", tag: "AFA" },
+            { id: 415, name: "Gorra AFA Premium Rayada", category: "gorra", price: 15000, image: "6bd5a00c5d7e2b71a5d3f4b9c546b1e5b22bb708563dd1213f6ac8cac876cc9f77480.jpg", tag: "PREMIUM" },
+            { id: 416, name: "Gorra AFA Escudo Clásico", category: "gorra", price: 15000, image: "727b623ec01031c4eaa624c37a5e7d7d6ba190a8dead2fe3920b8f9dd3b179d477480.jpg", tag: "AFA" },
+
+            // Gorras anteriores clásicas
+            { id: 401, name: "Gorra Trucker Made in Mato Azul/Beige", category: "gorra", price: 8500, image: "Screenshot_20260914_232154_Instagram.jpg", tag: "EXCLUSIVE" },
+            { id: 402, name: "Gorra Flexfit Verde Original", category: "gorra", price: 8900, image: "Screenshot_20260914_232521_Instagram.jpg", tag: "FLEXFIT" },
+            { id: 403, name: "Gorra Farm Bulls Company Celeste Estampada", category: "gorra", price: 9200, image: "Screenshot_20260914_232610_Instagram.jpg", tag: "LIMITED" },
+            { id: 404, name: "Gorra Made in Mato Navy Edition", category: "gorra", price: 8500, image: "Screenshot_20260914_232052_Instagram.jpg", tag: "MAYORISTA" },
+            { id: 405, name: "Gorra Mitchell & Ness Bulls Morada y Plateada", category: "gorra", price: 12500, image: "Screenshot_20260914_232333_Instagram (1).jpg", tag: "SNAPBACK" },
+            { id: 406, name: "Gorra The Punisher Justice Edition", category: "gorra", price: 8900, image: "Screenshot_20260914_232226_Instagram.jpg", tag: "PREMIUM" },
+            { id: 407, name: "Gorra Farm Bulls Paisley Pink & Black", category: "gorra", price: 9200, image: "Screenshot_20260914_232627_Instagram.jpg", tag: "NEW" },
+            { id: 408, name: "Gorra Made in Mato Cuero Negro y Mostaza", category: "gorra", price: 8900, image: "Screenshot_20260914_232140_Instagram.jpg", tag: "LEATHER" },
+            
+            // Bandoleras
+            { id: 601, name: "Bandolera Urbana Jordan & Nike Black Edition", category: "bandolera", price: 14500, image: "1788358850122.png", tag: "NUEVO" },
+            { id: 602, name: "Set de Bolsos Organizadores Boss & Jordan", category: "bandolera", price: 16000, image: "1788359594022.png", tag: "PREMIUM" },
+
+            // Cadenas
+            { id: 701, name: "Cadena con Dije de Auriculares en Caja de Regalo", category: "cadena", price: 9800, image: "Picsart_26-04-27_15-33-28-438.jpg", tag: "REGALO" },
+            { id: 502, name: "Cadena Acero Quirúrgico Eslabón Cubano", category: "cadena", price: 7500, image: "https://placehold.co/600x600/222/3b82f6?text=Cadena+Cubana", tag: "ACERO" },
+
+            // Gafas (Incluyendo todas las fotos provistas)
+            { id: 503, name: "Gafas de Sol Estilo Cyberpunk UV400", category: "gafas", price: 9500, image: "https://placehold.co/600x600/222/a855f7?text=Gafas+Cyberpunk", tag: "TENDENCIA" },
+            { id: 504, name: "Gafas de Sol 3895", category: "gafas", price: 9500, image: "img_3895-93ed18dbdf6cfc812d173766347341324-1024-1024.webp", tag: "GAFAS" },
+            { id: 505, name: "Gafas de Sol 220600", category: "gafas", price: 9500, image: "Screenshot_20260916_220600_Chrome.jpg", tag: "GAFAS" },
+            { id: 506, name: "Gafas de Sol 3898", category: "gafas", price: 9500, image: "img_3898-57d431b3610c75f0c717376634733680-1024-1024.webp", tag: "GAFAS" },
+            { id: 507, name: "Gafas de Sol 3900", category: "gafas", price: 9500, image: "img_3900-b865557f579e58c21f17376634738815-1024-1024.webp", tag: "GAFAS" },
+            { id: 508, name: "Gafas de Sol 3901", category: "gafas", price: 9500, image: "img_3901-1968be034d5c5e864217376634733473-1024-1024.webp", tag: "GAFAS" },
+            { id: 509, name: "Gafas de Sol 220632", category: "gafas", price: 9500, image: "Screenshot_20260916_220632_Chrome.jpg", tag: "GAFAS" },
+            { id: 510, name: "Gafas de Sol 3896", category: "gafas", price: 9500, image: "img_3896-c0e4221579469987b717376634733164-1024-1024.webp", tag: "GAFAS" },
+            { id: 511, name: "Gafas de Sol 5693", category: "gafas", price: 9500, image: "img_5693-691fa4865ce16513ef17411799983841-1024-1024.webp", tag: "GAFAS" }
+        ];
+
+        let currentSelectedProduct = null;
+        let cart = [];
+
+        function formatPrice(price) {
+            return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0 }).format(price);
+        }
+
+        function renderProducts(listToRender) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            if (listToRender.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400">No se encontraron productos con esa búsqueda o filtro.</div>`;
+                return;
+            }
+
+            listToRender.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-xl overflow-hidden group';
+                card.onclick = () => openModal(product);
+                card.innerHTML = `
+                    <div class="product-img-container relative">
+                        ${product.tag ? `<span class="absolute top-3 left-3 bg-[#ef4444] text-white text-xs font-bold px-2 py-1 rounded z-10">${product.tag}</span>` : ''}
+                        <img src="${product.image}" alt="${product.name}" class="product-img" loading="lazy" onerror="this.src='https://placehold.co/600x600/111/fff?text=Quantize+Item'">
+                    </div>
+                    <div class="p-5">
+                        <div class="text-xs text-gray-500 uppercase tracking-wider mb-1">${product.category}</div>
+                        <h3 class="text-lg font-bold brand-font mb-2 truncate">${product.name}</h3>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold text-[#ef4444]">${formatPrice(product.price)}</span>
+                            <button onclick="event.stopPropagation(); quickAddToCart(${product.id})" class="text-xs bg-white/10 hover:bg-[#ef4444] px-3 py-1.5 rounded-lg font-semibold transition-colors">Agregar 🛒</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterProducts(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.dataset.cat === category) {
+                    btn.classList.add('active');
+                }
+            });
+            document.getElementById('search-input').value = '';
+            if (category === 'all') {
+                renderProducts(products);
+            } else {
+                renderProducts(products.filter(p => p.category === category));
+            }
+        }
+
+        function filterByTag(keyword) {
+            document.getElementById('search-input').value = '';
+            const kw = keyword.toLowerCase();
+            const filtered = products.filter(p => {
+                const nameMatch = p.name.toLowerCase().includes(kw);
+                const tagMatch = p.tag && p.tag.toLowerCase().includes(kw);
+                
+                if (kw === 'futbol') {
+                    return nameMatch || tagMatch || p.name.toLowerCase().includes('river') || p.name.toLowerCase().includes('boca') || p.name.toLowerCase().includes('afa') || p.name.toLowerCase().includes('brasil') || p.name.toLowerCase().includes('chicago');
+                }
+                if (kw === 'argentina') {
+                    return nameMatch || tagMatch || p.name.toLowerCase().includes('afa') || p.name.toLowerCase().includes('river') || p.name.toLowerCase().includes('boca');
+                }
+                if (kw === 'vans') {
+                    return nameMatch || tagMatch || p.name.toLowerCase().includes('vans');
+                }
+                if (kw === 'jordan') {
+                    return nameMatch || tagMatch || p.name.toLowerCase().includes('jordan');
+                }
+                if (kw === 'nike') {
+                    return nameMatch || tagMatch || p.name.toLowerCase().includes('nike');
+                }
+                if (kw === 'chicago') {
+                    return nameMatch || tagMatch || p.name.toLowerCase().includes('chicago') || p.name.toLowerCase().includes('bulls');
+                }
+                return nameMatch || tagMatch;
+            });
+
+            renderProducts(filtered);
+            document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            if (!query) {
+                renderProducts(products);
+                return;
+            }
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(query) || 
+                p.category.toLowerCase().includes(query) || 
+                (p.tag && p.tag.toLowerCase().includes(query))
+            );
+            renderProducts(filtered);
+        }
+
+        function openModal(product) {
+            currentSelectedProduct = product;
+            document.getElementById('modal-img').src = product.image;
+            document.getElementById('modal-title').textContent = product.name;
+            document.getElementById('modal-price').textContent = formatPrice(product.price);
+            document.getElementById('modal-tag').textContent = product.tag || 'QUANTIZE';
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        // --- GESTIÓN DEL CARRITO ---
+        function quickAddToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+            toggleCartModal();
+        }
+
+        function addToCartFromModal() {
+            if (!currentSelectedProduct) return;
+            const existing = cart.find(item => item.id === currentSelectedProduct.id);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...currentSelectedProduct, quantity: 1 });
+            }
+            closeModal();
+            updateCartUI();
+            toggleCartModal();
+        }
+
+        function updateQuantity(productId, change) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.id !== productId);
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const container = document.getElementById('cart-items-container');
+            const totalPriceEl = document.getElementById('cart-total-price');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            if (totalCount > 0) {
+                badge.textContent = totalCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            totalPriceEl.textContent = formatPrice(totalPrice);
+
+            if (cart.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-gray-400">Tu carrito está vacío.</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            cart.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/5';
+                div.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-contain bg-white rounded-lg p-1">
+                        <div>
+                            <h4 class="text-xs font-bold brand-font line-clamp-1">${item.name}</h4>
+                            <div class="text-xs text-[#ef4444] font-semibold">${formatPrice(item.price)}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="flex items-center bg-black/40 rounded-lg border border-white/10 px-2 py-1">
+                            <button onclick="updateQuantity(${item.id}, -1)" class="text-gray-400 hover:text-white px-1 font-bold">-</button>
+                            <span class="text-xs font-bold px-2">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)" class="text-gray-400 hover:text-white px-1 font-bold">+</button>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-red-400 hover:text-red-300 p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function toggleCartModal() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) return;
+            let message = "Hola! Me interesa realizar el siguiente pedido:\n\n";
+            cart.forEach(item => {
+                message += `- ${item.quantity}x *${item.name}* (${formatPrice(item.price * item.quantity)})\n`;
+            });
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            message += `\n*Total a pagar: ${formatPrice(total)}*\n\n¿Cómo procedemos con el pago y envío?`;
+
+            const whatsappUrl = `https://wa.me/5491160565501?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function buyProductDirect() {
+            if (!currentSelectedProduct) return;
+            const message = `Hola! Me interesa comprar el siguiente producto: *${currentSelectedProduct.name}* por un valor de *${formatPrice(currentSelectedProduct.price)}*. ¿Cómo hacemos?`;
+            const whatsappUrl = `https://wa.me/5491160565501?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function openDirectWhatsApp() {
+            const message = `Hola! Vengo de la tienda QUANTIZE y quiero consultar por sus productos.`;
+            const whatsappUrl = `https://wa.me/5491160565501?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts(products);
+            updateCartUI();
+        });
+    </script>
+</body>
+</html>
